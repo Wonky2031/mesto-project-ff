@@ -1,0 +1,38 @@
+{
+  "name": "mesto-project-ff_2",
+  "version": "1.0.0",
+  "description": "Карпенко Илья Александрович  \r https://github.com/Wonky2031/mesto-project-ff.git",
+  "homepage": "https://github.com/Wonky2031/mesto-project-ff#readme",
+  "bugs": {
+    "url": "https://github.com/Wonky2031/mesto-project-ff/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wonky2031/mesto-project-ff.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "dev": "webpack serve"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@babel/preset-env": "^7.29.0",
+    "autoprefixer": "^10.4.27",
+    "babel-loader": "^10.1.1",
+    "clean-webpack-plugin": "^4.0.0",
+    "css-loader": "^7.1.4",
+    "cssnano": "^7.1.3",
+    "html-webpack-plugin": "^5.6.6",
+    "mini-css-extract-plugin": "^2.10.1",
+    "postcss-loader": "^8.2.1",
+    "webpack": "^5.105.4",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.3"
+  },
+  "dependencies": {
+    "core-js": "^3.48.0"
+  }
+}

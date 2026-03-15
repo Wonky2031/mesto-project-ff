@@ -1,26 +1,34 @@
-const cardTemplate = document.querySelector("#card-template").content;
-const placesList = document.querySelector(".places__list");
+import { openModal } from "./modal";
 
-function createCard(itemData, deleteFunction) {
+export function createCard(
+  cardTemplate,
+  itemData,
+  deleteFunction,
+  likeFunction,
+  popup,
+) {
   const cardElement = cardTemplate.querySelector(".places__item").cloneNode(true);
 
   const cardTitle = cardElement.querySelector(".card__title");
   const cardImage = cardElement.querySelector(".card__image");
   const deleteButton = cardElement.querySelector(".card__delete-button");
-  
+  const likeButton = cardElement.querySelector(".card__like-button");
+
   cardTitle.textContent = itemData.name;
   cardImage.src = itemData.link;
   deleteButton.addEventListener("click", deleteFunction);
-
+  likeButton.addEventListener("click", likeFunction);
+  cardImage.addEventListener("click", (evt) => {
+    openModal(evt, popup);
+  });
   return cardElement;
 }
 
-function deleteCard(event) {
+export function deleteCard(event) {
   const cardToDelete = event.target.closest(".places__item");
   cardToDelete.remove();
 }
 
-initialCards.forEach((cardData) => {
-  const card = createCard(cardData, deleteCard);
-  placesList.append(card);
-});
+export function likeCard(event) {
+  event.target.classList.toggle("card__like-button_is-active");
+}

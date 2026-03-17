@@ -1,34 +1,35 @@
-import { openModal } from "./modal";
+export function createCard(cardTemplate, itemData, deleteFunction, likeFunction, imagePopup, openFunction) {
+  const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true);
 
-export function createCard(
-  cardTemplate,
-  itemData,
-  deleteFunction,
-  likeFunction,
-  popup,
-) {
-  const cardElement = cardTemplate.querySelector(".places__item").cloneNode(true);
+  const cardTitle = cardElement.querySelector('.card__title');
+  const cardImage = cardElement.querySelector('.card__image');
+  const deleteButton = cardElement.querySelector('.card__delete-button');
+  const likeButton = cardElement.querySelector('.card__like-button');
 
-  const cardTitle = cardElement.querySelector(".card__title");
-  const cardImage = cardElement.querySelector(".card__image");
-  const deleteButton = cardElement.querySelector(".card__delete-button");
-  const likeButton = cardElement.querySelector(".card__like-button");
+  const popupImage = imagePopup.querySelector('.popup__image');
+  const popupTitle = imagePopup.querySelector('.popup__caption');
 
   cardTitle.textContent = itemData.name;
   cardImage.src = itemData.link;
-  deleteButton.addEventListener("click", deleteFunction);
-  likeButton.addEventListener("click", likeFunction);
-  cardImage.addEventListener("click", (evt) => {
-    openModal(evt, popup);
+  cardImage.alt = itemData.name;
+
+
+  deleteButton.addEventListener('click', deleteFunction);
+  likeButton.addEventListener('click', likeFunction);
+  cardImage.addEventListener('click', () => {
+    popupImage.src = cardImage.src;
+    popupImage.alt = cardTitle.textContent;
+    popupTitle.textContent = cardTitle.textContent;
+    openFunction(imagePopup);
   });
   return cardElement;
 }
 
 export function deleteCard(event) {
-  const cardToDelete = event.target.closest(".places__item");
+  const cardToDelete = event.target.closest('.places__item');
   cardToDelete.remove();
 }
 
 export function likeCard(event) {
-  event.target.classList.toggle("card__like-button_is-active");
+  event.target.classList.toggle('card__like-button_is-active');
 }

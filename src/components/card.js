@@ -1,13 +1,10 @@
-export function createCard(cardTemplate, itemData, deleteFunction, likeFunction, imagePopup, openFunction) {
+export function createCard(cardTemplate, itemData, deleteFunction, likeFunction, openImageFunction) {
   const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true);
 
   const cardTitle = cardElement.querySelector('.card__title');
   const cardImage = cardElement.querySelector('.card__image');
   const deleteButton = cardElement.querySelector('.card__delete-button');
   const likeButton = cardElement.querySelector('.card__like-button');
-
-  const popupImage = imagePopup.querySelector('.popup__image');
-  const popupTitle = imagePopup.querySelector('.popup__caption');
 
   cardTitle.textContent = itemData.name;
   cardImage.src = itemData.link;
@@ -16,12 +13,7 @@ export function createCard(cardTemplate, itemData, deleteFunction, likeFunction,
 
   deleteButton.addEventListener('click', deleteFunction);
   likeButton.addEventListener('click', likeFunction);
-  cardImage.addEventListener('click', () => {
-    popupImage.src = cardImage.src;
-    popupImage.alt = cardTitle.textContent;
-    popupTitle.textContent = cardTitle.textContent;
-    openFunction(imagePopup);
-  });
+  cardImage.addEventListener('click', openImageFunction);
   return cardElement;
 }
 

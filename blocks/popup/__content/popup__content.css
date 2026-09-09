@@ -14,7 +14,7 @@
 }
 
 .popup_type_edit-profile-image .popup__content {
-  min-height: fit-content
+  min-height: fit-content;
 }
 
 @media screen and (max-width: 568px) {

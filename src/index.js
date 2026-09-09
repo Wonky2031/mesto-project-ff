@@ -175,7 +175,7 @@ function submitNewCardForm(evt) {
           likeCard,
           updateCardLikes,
           openImagePopup,
-          userData,
+          userData._id,
           openConfirmPopup,
         );
         form.reset();
@@ -284,7 +284,7 @@ Promise.all([getUserDataRequest(), getAllCardsDataRequest()]).then(
         likeCard,
         updateCardLikes,
         openImagePopup,
-        userData,
+        userData._id,
         openConfirmPopup,
       );
       placesList.append(card);

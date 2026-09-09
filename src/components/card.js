@@ -5,7 +5,7 @@ export function createCard(
   likeFunction,
   updateLikesFunction,
   openImageFunction,
-  userData,
+  userId,
   openConfirmPopupFunction,
 ) {
   const cardElement = cardTemplate
@@ -23,7 +23,7 @@ export function createCard(
   cardImage.alt = itemData.name;
   cardLikeCount.textContent = itemData.likes.length;
 
-  if (itemData.owner._id == userData._id) {
+  if (itemData.owner._id == userId) {
     deleteButton.style.display = "block";
     deleteButton.addEventListener("click", (event) =>
       openConfirmPopupFunction(event, itemData._id, deleteFunction),
@@ -32,7 +32,7 @@ export function createCard(
     deleteButton.style.display = "none";
   }
 
-  if (itemData.likes.some((user) => user._id === userData._id))
+  if (itemData.likes.some((user) => user._id === userId))
     likeButton.classList.add("card__like-button_is-active");
   likeButton.addEventListener("click", (event) =>
     updateLikesFunction(event.target, itemData._id, likeFunction),

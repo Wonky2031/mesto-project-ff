@@ -61,6 +61,26 @@
       <p class="popup__caption"></p>
     </div>
   </div>
+
+  <div class="popup popup_type_delete-card">
+    <div class="popup__content">
+      <button type="button" class="popup__close"></button>
+      <h3 class="popup__title">Вы уверены?</h3>
+      <button type="button" class="button popup__button">Да</button>
+    </div>
+  </div>
+
+  <div class="popup popup_type_edit-profile-image">
+    <div class="popup__content">
+      <button type="button" class="popup__close"></button>
+      <h3 class="popup__title">Обновить аватар</h3>
+      <form class="popup__form" name="edit-profile-image">
+        <input type="url" name="avatar" class="popup__input popup__input_type_url" placeholder="Ссылка на картинку" required>
+        <button type="submit" class="button popup__button">Сохранить</button>
+      </form>
+    </div>
+  </div>
+  
 </div>
 
 <template id="card-template">
@@ -70,7 +90,10 @@
     <div class="card__description">
       <h2 class="card__title">
       </h2>
-      <button type="button" class="card__like-button"></button>
+      <div class="card__like-container">
+        <button type="button" class="card__like-button"></button>
+        <span class="card__like-count">0</span>
+      </div>
     </div>
   </li>
 </template>

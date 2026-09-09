@@ -8,6 +8,26 @@
   background-position: center;
   margin: 0 29px 0 0;
   background-image: url(/images/avatar.jpg);
+
+  position: relative;
+}
+
+.profile__image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5) url(/images/avatar_hover.svg) center no-repeat;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.profile__image:hover::after {
+  opacity: 1;
 }
 
 @media screen and (max-width: 740px) {

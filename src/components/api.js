@@ -6,70 +6,44 @@ const config = {
   },
 };
 
+function getResponseData(res) {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`);
+}
+
 export const getAllCardsDataRequest = () => {
   return fetch(`${config.baseUrl}/cards`, {
     headers: config.headers,
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
-export const getCardDataRequest = (cardId) => {
-  return getAllCardsDataRequest().then((cards) =>
-    cards.find((card) => card._id === cardId),
-  );
-};
-
-export const getCardLikesCount = (cardId) => {
-  return getAllCardsDataRequest()
-    .then((cards) => cards.find((card) => card._id === cardId))
-    .then((cardData) => cardData.likes.length);
+  }).then(getResponseData);
 };
 
 export const getUserDataRequest = () => {
-  return fetch(
-    "https://nomoreparties.co/v1/higher-front-back-dev_cohort_01/users/me",
-    {
-      headers: config.headers,
-    },
-  )
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  return fetch(`${config.baseUrl}/users/me`, {
+    headers: config.headers,
+  }).then(getResponseData);
 };
 
 export const deleteCardLikeRequest = (cardId) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: "DELETE",
     headers: config.headers,
-  });
+  }).then(getResponseData);
 };
 
 export const addCardLikeRequest = (cardId) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: "PUT",
     headers: config.headers,
-  });
+  }).then(getResponseData);
 };
 
 export const deleteCardDataRequest = (cardId) => {
   return fetch(`${config.baseUrl}/cards/${cardId}`, {
     method: "DELETE",
     headers: config.headers,
-  });
+  }).then(getResponseData);
 };
 
 export const addCardDataRequest = (name, link) => {
@@ -80,12 +54,7 @@ export const addCardDataRequest = (name, link) => {
       name: name,
       link: link,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then(getResponseData);
 };
 
 export const updateAvatarRequest = (url) => {
@@ -95,12 +64,7 @@ export const updateAvatarRequest = (url) => {
     body: JSON.stringify({
       avatar: url,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then(getResponseData);
 };
 
 export const updateProfileInformation = (name, about) => {
@@ -111,10 +75,5 @@ export const updateProfileInformation = (name, about) => {
       name: name,
       about: about,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then(getResponseData);
 };

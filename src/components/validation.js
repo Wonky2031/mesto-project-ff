@@ -5,7 +5,6 @@ function enableValidation(settings) {
     submitButtonSelector,
     inactiveButtonClass,
     inputErrorClass,
-    errorClass,
   } = settings;
 
   const forms = document.querySelectorAll(formSelector);
@@ -15,10 +14,8 @@ function enableValidation(settings) {
     const submitButton = form.querySelector(submitButtonSelector);
 
     inputs.forEach((input) => {
-      createErrorElement(input, errorClass);
-
       input.addEventListener("input", function () {
-        checkInputValidity(this, inputErrorClass, errorClass);
+        checkInputValidity(this, inputErrorClass);
         toggleButtonState(
           form,
           inputSelector,
@@ -37,85 +34,39 @@ function enableValidation(settings) {
   });
 }
 
-function createErrorElement(input, errorClass) {
-  const errorId = `${input.id || input.name}-error`;
-  let errorElement = document.getElementById(errorId);
-
-  if (!errorElement) {
-    errorElement = document.createElement("span");
-    errorElement.id = errorId;
-    errorElement.className = errorClass;
-    input.parentNode.insertBefore(errorElement, input.nextSibling);
-  }
-
-  return errorElement;
-}
-
-function checkInputValidity(input, inputErrorClass, errorClass) {
+function checkInputValidity(input, inputErrorClass) {
   const errorId = `${input.id || input.name}-error`;
   const errorElement = document.getElementById(errorId);
 
-  if (input.dataset.pattern) {
-    const pattern = new RegExp(input.dataset.pattern);
-    if (!pattern.test(input.value) && input.value.length > 0) {
-      input.setCustomValidity(
-        input.dataset.patternError || "Некорректный формат",
-      );
-    } else {
-      input.setCustomValidity("");
-    }
-  }
-
-  const isValid = input.validity.valid;
-
-  if (!isValid) {
-    showInputError(input, errorElement, inputErrorClass, errorClass);
+  if (!input.validity.valid) {
+    showInputError(input, errorElement, inputErrorClass);
   } else {
-    hideInputError(input, errorElement, inputErrorClass, errorClass);
+    hideInputError(input, errorElement, inputErrorClass);
   }
 }
 
-function showInputError(input, errorElement, inputErrorClass, errorClass) {
+function showInputError(input, errorElement, inputErrorClass) {
   input.classList.add(inputErrorClass);
 
   if (errorElement) {
     errorElement.textContent = getErrorMessage(input);
-    errorElement.classList.add(errorClass);
   }
 }
 
-function hideInputError(input, errorElement, inputErrorClass, errorClass) {
+function hideInputError(input, errorElement, inputErrorClass) {
   input.classList.remove(inputErrorClass);
 
   if (errorElement) {
     errorElement.textContent = "";
-    errorElement.classList.remove(errorClass);
   }
 }
 
 function getErrorMessage(input) {
-  if (input.dataset.errorMessage) {
-    return input.dataset.errorMessage;
-  }
-
-  // Стандартные браузерные сообщения
-  if (input.validity.valueMissing) {
-    return "Вы пропустили это поле";
-  }
-  if (input.validity.tooShort) {
-    return `Минимальная длина ${input.minLength} символа`;
-  }
-  if (input.validity.tooLong) {
-    return `Максимальная длина ${input.maxLength} символов`;
-  }
   if (input.validity.patternMismatch) {
-    return input.dataset.patternError || "Некорректный формат";
-  }
-  if (input.validity.customError) {
-    return input.dataset.patternError || "Некорректное значение";
+    return input.dataset.patternError;
   }
 
-  return "Некорректное значение";
+  return input.validationMessage;
 }
 
 function toggleButtonState(
@@ -126,13 +77,7 @@ function toggleButtonState(
 ) {
   const submitButton = form.querySelector(submitButtonSelector);
   const inputs = form.querySelectorAll(inputSelector);
-  let isFormValid = true;
-
-  inputs.forEach((input) => {
-    if (!input.validity.valid) {
-      isFormValid = false;
-    }
-  });
+  const isFormValid = Array.from(inputs).every((input) => input.validity.valid);
 
   if (isFormValid) {
     submitButton.classList.remove(inactiveButtonClass);
@@ -149,28 +94,24 @@ function clearValidation(form, settings) {
     submitButtonSelector,
     inactiveButtonClass,
     inputErrorClass,
-    errorClass,
   } = settings;
 
   const inputs = form.querySelectorAll(inputSelector);
 
   inputs.forEach((input) => {
-    input.classList.remove(inputErrorClass);
-    input.setCustomValidity("");
+    const errorElement = document.getElementById(
+      `${input.id || input.name}-error`,
+    );
 
-    const errorId = `${input.id || input.name}-error`;
-    const errorElement = document.getElementById(errorId);
-    if (errorElement) {
-      errorElement.textContent = "";
-      errorElement.classList.remove(errorClass);
-    }
+    hideInputError(input, errorElement, inputErrorClass);
   });
 
-  const submitButton = form.querySelector(submitButtonSelector);
-  if (submitButton) {
-    submitButton.classList.add(inactiveButtonClass);
-    submitButton.disabled = true;
-  }
+  toggleButtonState(
+    form,
+    inputSelector,
+    submitButtonSelector,
+    inactiveButtonClass,
+  );
 }
 
 export { enableValidation, clearValidation };

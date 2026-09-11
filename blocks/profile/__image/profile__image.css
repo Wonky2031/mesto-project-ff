@@ -8,6 +8,7 @@
   background-position: center;
   margin: 0 29px 0 0;
   background-image: url(/images/avatar.jpg);
+  cursor: pointer;
 
   position: relative;
 }
